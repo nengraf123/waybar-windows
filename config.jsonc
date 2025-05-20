@@ -5,17 +5,14 @@
     "spacing": 4,
     "modules-left": [
         "custom/launcher",
-        "custom/search"
+        "custom/search",
+        "wlr/taskbar" // Перемещено сюда и упорядочено по активности окон
     ],
-    "modules-center": [
-        "wlr/taskbar"
-    ],
+    "modules-center": [],
     "modules-right": [
         "tray",
         "custom/tray",
-        "custom/system-info",
-        "custom/brightness",
-        "custom/notify",
+        "custom/system-info", // Оставляем, но меняем значок
         "battery",
         "network",
         "pulseaudio",
@@ -36,7 +33,8 @@
         "icon-size": 16,
         "tooltip-format": "{title}",
         "on-click": "activate",
-        "on-click-middle": "close"
+        "on-click-middle": "close",
+        "all-outputs": true // Убедимся, что отображает окна на всех экранах
     },
     "tray": {
         "icon-size": 16,
@@ -50,22 +48,9 @@
         "tooltip": "Close active windows or open task manager"
     },
     "custom/system-info": {
-        "format": "🖥️",
+        "format": "    ", // 4 пробела вместо 🖥️
         "on-click": "/home/graf/.config/waybar/system_info.sh",
         "tooltip": "Show system info"
-    },
-    "custom/brightness": {
-        "format": "☀ {percentage}%",
-        "exec": "brightnessctl | grep Current | awk '{print $NF}'", // Извлекаем последнее поле (100%)
-        "interval": 5,
-        "on-scroll-up": "brightnessctl set +5%",
-        "on-scroll-down": "brightnessctl set 5%-",
-        "tooltip": "Adjust brightness"
-    },
-    "custom/notify": {
-        "format": "🔔",
-        "on-click": "dunstctl history",
-        "tooltip": "Show notifications"
     },
     "battery": {
         "states": {
@@ -96,7 +81,7 @@
         "scroll-step": 5
     },
     "clock": {
-        "format": "{:%H:%M %p\n%y-%m-%d}",
+        "format": "{:%I:%M %p\n%y-%m-%d}",
         "tooltip-format": "<big>{:%Y-%m-%d %H:%M}</big>"
     }
 }

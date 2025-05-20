@@ -42,7 +42,7 @@ window#waybar {
     background: rgba(255, 255, 255, 0.2);
 }
 
-#tray, #custom-tray, #custom-system-info, #custom-brightness, #network, #pulseaudio, #battery, #clock {
+#tray, #custom-tray, #network, #pulseaudio, #battery, #clock {
     padding: 0 8px;
     color: #ffffff;
     background: rgba(255, 255, 255, 0.1);
@@ -67,7 +67,7 @@ window#waybar {
     color: #ff5555;
 }
 
-#tray:hover, #custom-tray:hover, #custom-system-info:hover, #custom-brightness:hover, #network:hover, #pulseaudio:hover, #battery:hover, #clock:hover {
+#tray:hover, #custom-tray:hover, #network:hover, #pulseaudio:hover, #battery:hover, #clock:hover {
     background: rgba(255, 255, 255, 0.2);
 }
 
