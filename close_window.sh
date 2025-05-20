@@ -30,16 +30,20 @@ if [ -z "$ADDRESS" ]; then
     exit 1
 fi
 
-# PID=$(hyprctl clients -j | jq -r ".[] | select(.address == \"0x$ADDRESS\") | .pid")
 PID=$(hyprctl clients -j | jq -r ".[] | select(.address == \"0x$ADDRESS\") | .pid" | head -n 1)
 echo "Найденные PID: $PID" >&2
+
 if [ -n "$PID" ]; then
-    echo "Найден PID: $PID" >&2
-    kill -15 $PID 2>/dev/null
-    if [ $? -eq 0 ]; then
-        echo "Процесс с PID: $PID успешно убит" >&2
+    if ps -p $PID > /dev/null 2>&1; then
+        kill -15 $PID 2>/dev/null
+        echo "Попытка завершения PID: $PID" >&2
+        if [ $? -eq 0 ]; then
+            echo "Процесс с PID: $PID успешно убит" >&2
+        else
+            echo "Ошибка при убийстве процесса с PID: $PID" >&2
+        fi
     else
-        echo "Ошибка при убийстве процесса с PID: $PID" >&2
+        echo "PID $PID не активен" >&2
     fi
 else
     echo "Не удалось найти PID для address: $ADDRESS" >&2
