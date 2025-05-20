@@ -165,9 +165,11 @@ int main(int argc, char* argv[]) {
 
         // Рендерим текст и тень
         std::stringstream ss;
-        ss << "CPU: " << data.cpu << "\nRAM: " << data.ram << "\nDisk: " << data.disk << data.gpu;
+        // ss << "CPU: " << data.cpu << " "; // Добавляем пробел для предотвращения переноса
+        ss << "CPU: " << data.cpu.substr(0, data.cpu.find("%")) << " ";
+        ss << "\nRAM: " << data.ram << "\nDisk: " << data.disk << data.gpu;
         std::string text = ss.str();
-        SDL_Color textColor = {255, 255, 255, 255}; // Убрали пульсацию
+        SDL_Color textColor = {255, 255, 255, 255};
         SDL_Color shadowColor = {50, 50, 50, 255};
 
         if (textSurface) SDL_FreeSurface(textSurface);
