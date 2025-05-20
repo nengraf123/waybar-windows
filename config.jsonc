@@ -8,6 +8,7 @@
     ],
     "modules-center": [],
     "modules-right": [
+        "tray", // Добавлен модуль для системного трея
         "custom/tray",
         "custom/system-info",
         "battery",
@@ -17,8 +18,26 @@
     ],
     "custom/launcher": {
         "format": "󰨇",
+        // "format": "<img src='/path/to/windows-logo.png'>", // Закомментировано для замены на PNG-иконку Windows
         "on-click": "wofi --show drun",
         "tooltip": false
+    },
+    "tray": {
+        "icon-size": 16,
+        "spacing": 8,
+        "tooltip": "System Tray"
+    },
+    "custom/tray": {
+        "format": "▲",
+        // "format": "<img src='/path/to/windows-tray-icon.png'>", // Закомментировано для замены на PNG-иконку трея
+        "on-click": "/home/graf/.config/waybar/close_window.sh",
+        "on-click-right": "kitty -e btop",
+        "tooltip": "Close active windows or open task manager"
+    },
+    "custom/system-info": {
+        "format": "🖥️",
+        "on-click": "/home/graf/.config/waybar/system_info.sh",
+        "tooltip": "Show system info"
     },
     "network": {
         "interface": "wlan0",
@@ -51,17 +70,5 @@
     "clock": {
         "format": "{:%H:%M %p\n%y-%m-%d}",
         "tooltip-format": "<big>{:%Y-%m-%d %H:%M}</big>"
-    },
-    "custom/tray": {
-        "format": "▲",
-        "on-click": "/home/graf/.config/waybar/close_window.sh",
-        "on-click-right": "",
-        "on-double-click": "",
-        "tooltip": "Close active windows"
-    },
-    "custom/system-info": {
-        "format": "🖥️",
-        "on-click": "/home/graf/.config/waybar/system_info.sh",
-        "tooltip": "Show system info"
     }
 }
