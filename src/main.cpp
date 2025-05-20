@@ -69,13 +69,20 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    // Загружаем шрифт (нужен файл шрифта, например, DejaVuSans.ttf)
-    TTF_Font* font = TTF_OpenFont("/usr/share/fonts/TTF/DejaVuSans.ttf", 16);
+    // Загружаем шрифт (попробуем Roboto, если нет, то Noto Sans или DejaVuSans)
+    TTF_Font* font = nullptr;
+    font = TTF_OpenFont("/usr/share/fonts/TTF/Roboto-Regular.ttf", 16);
     if (!font) {
-        std::cerr << "Failed to load font: " << TTF_GetError() << std::endl;
-        TTF_Quit();
-        SDL_Quit();
-        return 1;
+        font = TTF_OpenFont("/usr/share/fonts/noto/NotoSans-Regular.ttf", 16);
+        if (!font) {
+            font = TTF_OpenFont("/usr/share/fonts/TTF/DejaVuSans.ttf", 16);
+            if (!font) {
+                std::cerr << "Failed to load font: " << TTF_GetError() << std::endl;
+                TTF_Quit();
+                SDL_Quit();
+                return 1;
+            }
+        }
     }
 
     // Получаем размеры экрана
@@ -93,7 +100,7 @@ int main(int argc, char* argv[]) {
         "System Info",
         windowX, windowY,
         windowWidth, windowHeight,
-        SDL_WINDOW_SHOWN);
+        SDL_WINDOW_SHOWN | SDL_WINDOW_BORDERLESS);
     if (!window) {
         std::cerr << "SDL_CreateWindow failed: " << SDL_GetError() << std::endl;
         TTF_CloseFont(font);
@@ -121,10 +128,16 @@ int main(int argc, char* argv[]) {
 
     SDL_Surface* textSurface = nullptr;
     SDL_Texture* textTexture = nullptr;
+    SDL_Surface* shadowSurface = nullptr;
+    SDL_Texture* shadowTexture = nullptr;
 
     while (running) {
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
+                running = false;
+            }
+            // Закрываем окно при потере фокуса
+            if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_FOCUS_LOST) {
                 running = false;
             }
             // Проверяем позицию мыши
@@ -136,16 +149,39 @@ int main(int argc, char* argv[]) {
         }
 
         // Очищаем экран
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
         SDL_RenderClear(renderer);
 
-        // Рендерим текст
+        // Рисуем полупрозрачный фон
+        SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+        SDL_SetRenderDrawColor(renderer, 30, 30, 50, 230); // Темно-синий с прозрачностью
+        SDL_Rect bgRect = {5, 5, windowWidth - 10, windowHeight - 10};
+        SDL_RenderFillRect(renderer, &bgRect);
+
+        // Рисуем рамку
+        SDL_SetRenderDrawColor(renderer, 100, 100, 255, 255); // Светло-синяя рамка
+        SDL_Rect borderRect = {5, 5, windowWidth - 10, windowHeight - 10};
+        SDL_RenderDrawRect(renderer, &borderRect);
+
+        // Рендерим текст и тень
         std::stringstream ss;
         ss << "CPU: " << data.cpu << "\nRAM: " << data.ram << "\nDisk: " << data.disk << data.gpu;
         std::string text = ss.str();
-        SDL_Color textColor = {255, 255, 255, 255};
+        SDL_Color textColor = {255, 255, 255, 255}; // Убрали пульсацию
+        SDL_Color shadowColor = {50, 50, 50, 255};
+
         if (textSurface) SDL_FreeSurface(textSurface);
         if (textTexture) SDL_DestroyTexture(textTexture);
+        if (shadowSurface) SDL_FreeSurface(shadowSurface);
+        if (shadowTexture) SDL_DestroyTexture(shadowTexture);
+
+        // Тень
+        shadowSurface = TTF_RenderText_Blended_Wrapped(font, text.c_str(), shadowColor, windowWidth);
+        shadowTexture = SDL_CreateTextureFromSurface(renderer, shadowSurface);
+        SDL_Rect shadowRect = {12, 12, shadowSurface->w, shadowSurface->h};
+        SDL_RenderCopy(renderer, shadowTexture, nullptr, &shadowRect);
+
+        // Основной текст
         textSurface = TTF_RenderText_Blended_Wrapped(font, text.c_str(), textColor, windowWidth);
         textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
         SDL_Rect textRect = {10, 10, textSurface->w, textSurface->h};
@@ -169,6 +205,8 @@ int main(int argc, char* argv[]) {
     // Очистка
     if (textTexture) SDL_DestroyTexture(textTexture);
     if (textSurface) SDL_FreeSurface(textSurface);
+    if (shadowTexture) SDL_DestroyTexture(shadowTexture);
+    if (shadowSurface) SDL_FreeSurface(shadowSurface);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     TTF_CloseFont(font);
