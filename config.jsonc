@@ -4,23 +4,39 @@
     "height": 40,
     "spacing": 4,
     "modules-left": [
-        "custom/launcher"
+        "custom/launcher",
+        "custom/search"
     ],
-    "modules-center": [],
+    "modules-center": [
+        "wlr/taskbar"
+    ],
     "modules-right": [
-        "tray", // Добавлен модуль для системного трея
+        "tray",
         "custom/tray",
         "custom/system-info",
+        "custom/brightness",
+        "custom/notify",
         "battery",
         "network",
         "pulseaudio",
         "clock"
     ],
     "custom/launcher": {
-        "format": "󰨇",
-        // "format": "<img src='/path/to/windows-logo.png'>", // Закомментировано для замены на PNG-иконку Windows
+        "format": "",
         "on-click": "wofi --show drun",
         "tooltip": false
+    },
+    "custom/search": {
+        "format": "🔍 Search",
+        "on-click": "wofi --show drun --prompt 'Search'",
+        "tooltip": "Search apps and files"
+    },
+    "wlr/taskbar": {
+        "format": "{icon}",
+        "icon-size": 16,
+        "tooltip-format": "{title}",
+        "on-click": "activate",
+        "on-click-middle": "close"
     },
     "tray": {
         "icon-size": 16,
@@ -29,7 +45,6 @@
     },
     "custom/tray": {
         "format": "▲",
-        // "format": "<img src='/path/to/windows-tray-icon.png'>", // Закомментировано для замены на PNG-иконку трея
         "on-click": "/home/graf/.config/waybar/close_window.sh",
         "on-click-right": "kitty -e btop",
         "tooltip": "Close active windows or open task manager"
@@ -38,6 +53,29 @@
         "format": "🖥️",
         "on-click": "/home/graf/.config/waybar/system_info.sh",
         "tooltip": "Show system info"
+    },
+    "custom/brightness": {
+        "format": "☀ {percentage}%",
+        "exec": "brightnessctl | grep Current | awk '{print $NF}'", // Извлекаем последнее поле (100%)
+        "interval": 5,
+        "on-scroll-up": "brightnessctl set +5%",
+        "on-scroll-down": "brightnessctl set 5%-",
+        "tooltip": "Adjust brightness"
+    },
+    "custom/notify": {
+        "format": "🔔",
+        "on-click": "dunstctl history",
+        "tooltip": "Show notifications"
+    },
+    "battery": {
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon}",
+        "format-charging": " {capacity}%",
+        "format-plugged": " {capacity}%",
+        "format-icons": ["", "", "", "", ""]
     },
     "network": {
         "interface": "wlan0",
@@ -56,16 +94,6 @@
         "on-scroll-up": "pamixer -i 5",
         "on-scroll-down": "pamixer -d 5",
         "scroll-step": 5
-    },
-    "battery": {
-        "states": {
-            "warning": 30,
-            "critical": 15
-        },
-        "format": "{icon}",
-        "format-charging": " {capacity}%",
-        "format-plugged": " {capacity}%",
-        "format-icons": ["", "", "", "", ""]
     },
     "clock": {
         "format": "{:%H:%M %p\n%y-%m-%d}",

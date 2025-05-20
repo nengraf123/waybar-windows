@@ -1,7 +1,7 @@
 * {
     font-family: "Segoe UI", sans-serif;
     font-size: 12px;
-    font-weight: 600;
+    font-weight: normal;
     margin: 0;
     padding: 0;
     border: none;
@@ -9,7 +9,7 @@
 }
 
 window#waybar {
-    background: rgba(0, 0, 0, 0.8);
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.9), rgba(30, 30, 30, 0.9));
     color: #ffffff;
     border-radius: 0;
     margin: 0;
@@ -18,7 +18,7 @@ window#waybar {
 #custom-launcher {
     padding: 0 8px;
     color: #ffffff;
-    font-size: 16px;
+    font-size: 28px;
     background: rgba(0, 120, 215, 0.2);
     border-radius: 0;
     transition: all 0.2s ease;
@@ -26,10 +26,23 @@ window#waybar {
 
 #custom-launcher:hover {
     background: rgba(0, 120, 215, 0.4);
-    transform: scale(1.1);
+    padding: 0 10px;
 }
 
-#tray, #custom-tray, #network, #pulseaudio, #battery, #clock {
+#custom-search {
+    padding: 0 12px;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    margin: 0 4px;
+    transition: all 0.2s ease;
+}
+
+#custom-search:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+#tray, #custom-tray, #custom-system-info, #custom-brightness, #network, #pulseaudio, #battery, #clock {
     padding: 0 8px;
     color: #ffffff;
     background: rgba(255, 255, 255, 0.1);
@@ -47,13 +60,24 @@ window#waybar {
 
 #custom-tray {
     font-size: 14px;
-    background: rgba(0, 120, 215, 0.2); /* Windows 10 стиль */
+    background: rgba(0, 120, 215, 0.2);
 }
 
 #pulseaudio.muted {
     color: #ff5555;
 }
 
-#tray:hover, #custom-tray:hover, #network:hover, #pulseaudio:hover, #battery:hover, #clock:hover {
+#tray:hover, #custom-tray:hover, #custom-system-info:hover, #custom-brightness:hover, #network:hover, #pulseaudio:hover, #battery:hover, #clock:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+#wlr-taskbar {
+    padding: 0 8px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 0 2px;
+    transition: all 0.2s ease;
+}
+
+#wlr-taskbar:hover {
     background: rgba(255, 255, 255, 0.2);
 }
