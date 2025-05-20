@@ -9,6 +9,7 @@
     "modules-center": [],
     "modules-right": [
         "custom/tray",
+        "custom/system-info",
         "battery",
         "network",
         "pulseaudio",
@@ -24,7 +25,7 @@
         "format-wifi": "󰖩 {essid}",
         "format-disconnected": "󰖪 Disconnected",
         "tooltip-format": "{ifname}: {ipaddr}",
-        "on-click": "nmtui"
+        "on-click": "kitty -e nmtui"
     },
     "pulseaudio": {
         "format": "{icon} {volume}%",
@@ -42,7 +43,6 @@
             "warning": 30,
             "critical": 15
         },
-        // "format": "{icon} {capacity}%",
         "format": "{icon}",
         "format-charging": " {capacity}%",
         "format-plugged": " {capacity}%",
@@ -55,8 +55,13 @@
     "custom/tray": {
         "format": "▲",
         "on-click": "/home/graf/.config/waybar/close_window.sh",
-        "on-click-right": "",  // Временно отключаем правый клик
+        "on-click-right": "",
         "on-double-click": "",
         "tooltip": "Close active windows"
+    },
+    "custom/system-info": {
+        "format": "🖥️",
+        "on-click": "/home/graf/.config/waybar/system_info.sh",
+        "tooltip": "Show system info"
     }
 }
