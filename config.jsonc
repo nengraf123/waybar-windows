@@ -10,8 +10,8 @@
     "modules-right": [
         "custom/tray",
         "battery",
-        "pulseaudio",
         "network",
+        "pulseaudio",
         "clock"
     ],
     "custom/launcher": {
@@ -24,7 +24,7 @@
         "format-wifi": "󰖩 {essid}",
         "format-disconnected": "󰖪 Disconnected",
         "tooltip-format": "{ifname}: {ipaddr}",
-        "on-click": ""
+        "on-click": "nmtui"
     },
     "pulseaudio": {
         "format": "{icon} {volume}%",
@@ -42,13 +42,14 @@
             "warning": 30,
             "critical": 15
         },
-        "format": "{icon} {capacity}%",
+        // "format": "{icon} {capacity}%",
+        "format": "{icon}",
         "format-charging": " {capacity}%",
         "format-plugged": " {capacity}%",
         "format-icons": ["", "", "", "", ""]
     },
     "clock": {
-        "format": "{:%I:%M %p}",
+        "format": "{:%H:%M %p\n%y-%m-%d}",
         "tooltip-format": "<big>{:%Y-%m-%d %H:%M}</big>"
     },
     "custom/tray": {

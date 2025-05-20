@@ -5,10 +5,10 @@ sudo pacman -S hyprland jq wofi # команда для скачки всего 
 
 и после скачивания вы должны поместить waybar в путь {home/имя_пользователя/.config/waybar}
 
-еще вы должны прописать в .config/hypr.hyprland.conf
+Если вместо Американского времени 7:41PM  хотите 19:41
+то вместо строчки 52 в config.jsonc
+"format": "{:%I:%M %p}",
 
-windowrulev2 = float, title:^(Volume)$
-windowrulev2 = size 20 150, title:^(Volume)$
-windowrulev2 = move 1700 940, title:^(Volume)$
-windowrulev2 = nofocus, title:^(Volume)$, floating:1
+Измените на
+"format": "{:%H:%M}",
 
