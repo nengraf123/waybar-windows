@@ -182,7 +182,7 @@ int main(int argc, char* argv[]) {
         if (!data.gpu.empty()) {
             ss << data.gpu;
         }
-        ss << "RAM: " << data.ram << "\n";
+        ss << "\nRAM: " << data.ram << "\n";
         for (const auto& disk : data.disks) {
             ss << disk << "\n";
         }
