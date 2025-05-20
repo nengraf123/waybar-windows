@@ -4,7 +4,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
-#include <popen2.h> // Для выполнения команд через popen (нужно будет эмулировать)
+#include <stdio.h> // Для popen
 
 #ifdef _WIN32
     #define popen _popen
@@ -119,6 +119,9 @@ int main(int argc, char* argv[]) {
     SDL_Event event;
     SystemData data = getSystemData();
 
+    SDL_Surface* textSurface = nullptr;
+    SDL_Texture* textTexture = nullptr;
+
     while (running) {
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
@@ -141,8 +144,10 @@ int main(int argc, char* argv[]) {
         ss << "CPU: " << data.cpu << "\nRAM: " << data.ram << "\nDisk: " << data.disk << data.gpu;
         std::string text = ss.str();
         SDL_Color textColor = {255, 255, 255, 255};
-        SDL_Surface* textSurface = TTF_RenderText_Blended_Wrapped(font, text.c_str(), textColor, windowWidth);
-        SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+        if (textSurface) SDL_FreeSurface(textSurface);
+        if (textTexture) SDL_DestroyTexture(textTexture);
+        textSurface = TTF_RenderText_Blended_Wrapped(font, text.c_str(), textColor, windowWidth);
+        textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
         SDL_Rect textRect = {10, 10, textSurface->w, textSurface->h};
         SDL_RenderCopy(renderer, textTexture, nullptr, &textRect);
 
@@ -162,8 +167,8 @@ int main(int argc, char* argv[]) {
     }
 
     // Очистка
-    SDL_DestroyTexture(textTexture);
-    SDL_FreeSurface(textSurface);
+    if (textTexture) SDL_DestroyTexture(textTexture);
+    if (textSurface) SDL_FreeSurface(textSurface);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     TTF_CloseFont(font);
