@@ -30,20 +30,11 @@ if [ -z "$ADDRESS" ]; then
     exit 1
 fi
 
-# Попытка найти PID через hyprctl
+# Поиск PID с отладкой
 PID=$(hyprctl clients -j | jq -r ".[] | select(.address == \"0x$ADDRESS\") | .pid" | head -n 1)
-echo "PID из hyprctl: $PID" >&2
+echo "Найденный PID: $PID" >&2
 
-# Если PID не найден, попробуем через активное окно
-if [ -z "$PID" ]; then
-    ACTIVE_WINDOW=$(hyprctl activewindow -j | jq -r '.address')
-    if [ "$ACTIVE_WINDOW" = "$ADDRESS" ]; then
-        PID=$(hyprctl activewindow -j | jq -r '.pid')
-        echo "PID из активного окна: $PID" >&2
-    fi
-fi
-
-if [ -n "$PID" ] && ps -p $PID > /dev/null 2>&1; then
+if [ -n "$PID" ] && kill -0 $PID 2>/dev/null; then
     kill -15 $PID 2>/dev/null
     echo "Попытка завершения PID: $PID" >&2
     if [ $? -eq 0 ]; then
@@ -52,7 +43,10 @@ if [ -n "$PID" ] && ps -p $PID > /dev/null 2>&1; then
         echo "Ошибка при убийстве процесса с PID: $PID" >&2
     fi
 else
-    echo "Не удалось найти активный PID для address: $ADDRESS" >&2
+    echo "PID $PID не активен или не найден для address: $ADDRESS" >&2
+    # Попытка закрытия через Hyprland
+    hyprctl dispatch closewindow address:$ADDRESS
+    echo "Попытка закрытия окна через Hyprland с address: $ADDRESS" >&2
 fi
 
 echo "Завершение: $(date)" >&2
