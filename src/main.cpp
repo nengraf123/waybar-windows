@@ -26,31 +26,44 @@ std::string exec(const char* cmd) {
 
 // Структура для хранения данных системы
 struct SystemData {
-    std::string cpu, ram, disk, gpu;
+    std::string cpu, ram, gpu;
+    std::vector<std::string> disks; // Список дисков
 };
 
 SystemData getSystemData() {
     SystemData data;
 
     // CPU usage
-    data.cpu = exec("top -bn1 | grep \"Cpu(s)\" | awk '{print $2}' | cut -d. -f1") + "%";
+    data.cpu = exec("top -bn1 | grep \"Cpu(s)\" | awk '{print $2}' | cut -d. -f1");
 
     // RAM usage
     data.ram = exec("free -h | grep \"Mem:\" | awk '{print $3\"/\"$2}'");
-
-    // Disk usage
-    data.disk = exec("df -h / | tail -1 | awk '{print $3\"/\"$2}'");
 
     // GPU usage
     std::string gpuIntel = exec("intel_gpu_top -s 1 -o - | grep \"GPU\" | awk '{print $2}' | cut -d% -f1");
     std::string gpuAmd = exec("radeontop -l 1 | grep -A 1 \"GPU\" | tail -n 1 | awk '{print $2}' | cut -d% -f1");
     std::string gpuNvidia = exec("nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader | awk '{print $1}' | cut -d% -f1");
-
     data.gpu = "";
-    if (!gpuIntel.empty()) data.gpu += "\nIntel: " + gpuIntel + "%";
-    if (!gpuAmd.empty()) data.gpu += "\nAMD: " + gpuAmd + "%";
-    if (!gpuNvidia.empty()) data.gpu += "\nNVIDIA: " + gpuNvidia + "%";
-    if (data.gpu.empty()) data.gpu = "\nNo GPU data";
+    if (!gpuIntel.empty()) data.gpu += "GPU Intel: " + gpuIntel + "%\n";
+    if (!gpuAmd.empty()) data.gpu += "GPU AMD: " + gpuAmd + "%\n";
+    if (!gpuNvidia.empty()) data.gpu += "GPU NVIDIA: " + gpuNvidia + "%\n";
+    if (data.gpu.empty()) data.gpu = "No GPU data\n";
+
+    // Данные о дисках
+    std::string dfOutput = exec("df -h");
+    std::istringstream dfStream(dfOutput);
+    std::string line;
+    std::getline(dfStream, line); // Пропускаем заголовок
+    while (std::getline(dfStream, line)) {
+        std::istringstream lineStream(line);
+        std::string filesystem, size, used, avail, usePercent, mountPoint;
+        if (lineStream >> filesystem >> size >> used >> avail >> usePercent >> mountPoint) {
+            // Пропускаем корень и системные точки, если нужно (например, /boot или /run)
+            if (mountPoint != "/" && mountPoint != "none" && !mountPoint.empty()) {
+                data.disks.push_back(mountPoint + ": " + used + "/" + size);
+            }
+        }
+    }
 
     return data;
 }
@@ -165,9 +178,14 @@ int main(int argc, char* argv[]) {
 
         // Рендерим текст и тень
         std::stringstream ss;
-        // ss << "CPU: " << data.cpu << " "; // Добавляем пробел для предотвращения переноса
-        ss << "CPU: " << data.cpu.substr(0, data.cpu.find("%")) << " ";
-        ss << "\nRAM: " << data.ram << "\nDisk: " << data.disk << data.gpu;
+        ss << "CPU: " << data.cpu << "\n";
+        if (!data.gpu.empty()) {
+            ss << data.gpu;
+        }
+        ss << "RAM: " << data.ram << "\n";
+        for (const auto& disk : data.disks) {
+            ss << disk << "\n";
+        }
         std::string text = ss.str();
         SDL_Color textColor = {255, 255, 255, 255};
         SDL_Color shadowColor = {50, 50, 50, 255};
