@@ -8,11 +8,11 @@
     ],
     "modules-center": [],
     "modules-right": [
-        "clock",
+        "custom/tray",
         "battery",
         "pulseaudio",
         "network",
-        "custom/tray"
+        "clock"
     ],
     "custom/launcher": {
         "format": "󰨇",
