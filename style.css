@@ -1,0 +1,43 @@
+* {
+    font-family: "Segoe UI", sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+}
+
+window#waybar {
+    background: rgba(0, 0, 0, 0.8);
+    color: #ffffff;
+    border-radius: 0;
+    margin: 0;
+}
+
+#custom-launcher {
+    padding: 0 8px;
+    color: #ffffff;
+    font-size: 16px;
+    background: rgba(0, 120, 215, 0.2);
+    border-radius: 0;
+}
+
+#custom-launcher:hover {
+    background: rgba(0, 120, 215, 0.4);
+}
+
+#network, #pulseaudio, #battery, #clock, #custom-tray {
+    padding: 0 8px;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 0 2px;
+}
+
+#pulseaudio.muted {
+    color: #ff5555;
+}
+
+#network:hover, #pulseaudio:hover, #battery:hover, #clock:hover, #custom-tray:hover {
+    background: rgba(255, 255, 255, 0.2);
+}

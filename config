@@ -1,0 +1,61 @@
+{
+    "layer": "top",
+    "position": "bottom",
+    "height": 40,
+    "spacing": 4,
+    "modules-left": [
+        "custom/launcher"
+    ],
+    "modules-center": [],
+    "modules-right": [
+        "clock",
+        "battery",
+        "pulseaudio",
+        "network",
+        "custom/tray"
+    ],
+    "custom/launcher": {
+        "format": "󰨇",
+        "on-click": "wofi --show drun",
+        "tooltip": false
+    },
+    "network": {
+        "interface": "wlan0",
+        "format-wifi": "󰖩 {essid}",
+        "format-disconnected": "󰖪 Disconnected",
+        "tooltip-format": "{ifname}: {ipaddr}",
+        "on-click": ""
+    },
+    "pulseaudio": {
+        "format": "{icon} {volume}%",
+        "format-muted": "󰝟 Muted",
+        "format-icons": {
+            "default": ["", "", ""]
+        },
+        "on-click": "pamixer --toggle-mute",
+        "on-scroll-up": "pamixer -i 5",
+        "on-scroll-down": "pamixer -d 5",
+        "scroll-step": 5
+    },
+    "battery": {
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon} {capacity}%",
+        "format-charging": " {capacity}%",
+        "format-plugged": " {capacity}%",
+        "format-icons": ["", "", "", "", ""]
+    },
+    "clock": {
+        "format": "{:%I:%M %p}",
+        "tooltip-format": "<big>{:%Y-%m-%d %H:%M}</big>"
+    },
+    "custom/tray": {
+        "format": "▲",
+        "on-click": "/home/graf/.config/waybar/close_window.sh",
+        "on-click-right": "",  // Временно отключаем правый клик
+        "on-double-click": "",
+        "tooltip": "Close active windows"
+    }
+}
