@@ -48,7 +48,7 @@
         "tooltip": "Close active windows or open task manager"
     },
     "custom/system-info": {
-        "format": "    ", // 4 пробела вместо 🖥️
+        "format": "    ", // 4 пробела вместо а то для винды будет красивее так
         "on-click": "/home/graf/.config/waybar/system_info.sh",
         "tooltip": "Show system info"
     },
