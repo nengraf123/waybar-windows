@@ -81,7 +81,7 @@
         "scroll-step": 5
     },
     "clock": {
-        "format": "{:%I:%M %p\n%y-%m-%d}",
+        "format": "{:%H:%M %p\n%y-%m-%d}",
         "tooltip-format": "<big>{:%Y-%m-%d %H:%M}</big>"
     }
 }
