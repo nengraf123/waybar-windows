@@ -20,7 +20,8 @@
     ],
     "custom/launcher": {
         "format": "",
-        "on-click": "wofi --show drun",
+        // "on-click": "wofi --show drun",
+        "on-click": "~/.config/waybar/start_menu.sh",
         "tooltip": false
     },
     "custom/search": {
