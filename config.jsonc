@@ -6,22 +6,21 @@
     "modules-left": [
         "custom/launcher",
         "custom/search",
-        "wlr/taskbar" // Перемещено сюда и упорядочено по активности окон
+        "wlr/taskbar"
     ],
     "modules-center": [],
     "modules-right": [
         "tray",
         "custom/tray",
-        "custom/system-info", // Оставляем, но меняем значок
+        "custom/system-info",
         "battery",
         "network",
         "pulseaudio",
         "clock"
     ],
     "custom/launcher": {
-        "format": "",
-        // "on-click": "wofi --show drun",
-        "on-click": "~/.config/waybar/start_menu.sh",
+        "format": "<img src='img/windows10.png' width='24'/>",
+        "on-click": "/home/graf/.config/waybar/start_menu.sh",
         "tooltip": false
     },
     "custom/search": {
@@ -35,7 +34,7 @@
         "tooltip-format": "{title}",
         "on-click": "activate",
         "on-click-middle": "close",
-        "all-outputs": true // Убедимся, что отображает окна на всех экранах
+        "all-outputs": true
     },
     "tray": {
         "icon-size": 16,
@@ -49,7 +48,7 @@
         "tooltip": "Close active windows or open task manager"
     },
     "custom/system-info": {
-        "format": "    ", // 4 пробела вместо а то для винды будет красивее так
+        "format": "    ",
         "on-click": "/home/graf/.config/waybar/system_info.sh",
         "tooltip": "Show system info"
     },
