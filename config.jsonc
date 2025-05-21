@@ -19,7 +19,7 @@
         "clock"
     ],
     "custom/launcher": {
-        "format": "<img src='img/windows10.png' width='24'/>",
+        "format": "\uf17a", // Символ Windows из Font Awesome
         "on-click": "/home/graf/.config/waybar/start_menu.sh",
         "tooltip": false
     },
